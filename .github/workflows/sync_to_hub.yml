@@ -18,4 +18,15 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://Pardha05:$HF_TOKEN@huggingface.co/spaces/Pardha05/trading-analizer main
+        run: |
+          git config --global user.email "sync-bot@example.com"
+          git config --global user.name "Sync Bot"
+          # Create a temporary directory and copy files
+          mkdir temp_sync
+          cp -r . temp_sync/
+          cd temp_sync
+          rm -rf .git
+          git init
+          git add .
+          git commit -m "Syncing current state"
+          git push --force https://Pardha05:$HF_TOKEN@huggingface.co/spaces/Pardha05/trading-analizer main

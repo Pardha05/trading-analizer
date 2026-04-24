@@ -21,12 +21,9 @@ jobs:
         run: |
           git config --global user.email "sync-bot@example.com"
           git config --global user.name "Sync Bot"
-          # Create a temporary directory and copy files
-          mkdir temp_sync
-          cp -r . temp_sync/
-          cd temp_sync
+          # Reset git history locally in the runner to push a clean single commit
           rm -rf .git
           git init
           git add .
-          git commit -m "Syncing current state"
+          git commit -m "Syncing latest state"
           git push --force https://Pardha05:$HF_TOKEN@huggingface.co/spaces/Pardha05/trading-analizer main

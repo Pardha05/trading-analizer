@@ -15,10 +15,12 @@ def safe_load(*args, **kwargs):
     return original_load(*args, **kwargs)
 torch.load = safe_load
 
-# ─── YOLOv8 via ultralyticsplus (supports HuggingFace Hub model IDs) ─────────
-from ultralyticsplus import YOLO
+# ─── YOLOv8 via ultralytics (standard) and huggingface_hub for downloading ───
+from ultralytics import YOLO
+from huggingface_hub import hf_hub_download
 import easyocr
 import re
+import os
 
 # ─── Pattern Metadata ─────────────────────────────────────────────────────────
 # ... (rest of the metadata)
@@ -55,8 +57,16 @@ class PatternPredictor:
     """
 
     def __init__(self):
-        print("  Loading YOLOv8 chart pattern model from HuggingFace...")
-        self.model = YOLO('foduucom/stockmarket-pattern-detection-yolov8')
+        print("Initializing AI Pattern Predictor (YOLOv8 + EasyOCR)...")
+        
+        # 1. Download model file directly from HuggingFace Hub
+        model_path = hf_hub_download(
+            repo_id="foduucom/stockmarket-pattern-detection-yolov8", 
+            filename="model.pt"
+        )
+        
+        # 2. Load the model using standard Ultralytics YOLO
+        self.model = YOLO(model_path)
         self.model.overrides['conf'] = 0.25
         self.model.overrides['iou']  = 0.45
         self.model.overrides['max_det'] = 15

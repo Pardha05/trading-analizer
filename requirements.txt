@@ -1,7 +1,8 @@
 # ABS — Chart Pattern Recognition
 # YOLOv8 replaces TensorFlow (no training required, model auto-downloads from HuggingFace)
 
-ultralytics>=8.0.0       # YOLOv8 + auto HuggingFace model download
+ultralytics>=8.0.0
+huggingface_hub
 flask>=3.0.0
 flask-cors>=4.0.0
 numpy>=1.24.0

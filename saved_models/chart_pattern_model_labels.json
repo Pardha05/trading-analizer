@@ -1,0 +1,18 @@
+{
+  "0": "ascending_triangle",
+  "1": "bearish_flag",
+  "2": "bearish_pennant",
+  "3": "bearish_wedge",
+  "4": "bullish_flag",
+  "5": "bullish_wedge",
+  "6": "cup_and_handle",
+  "7": "descending_triangle",
+  "8": "double_bottom",
+  "9": "double_top",
+  "10": "head_and_shoulders",
+  "11": "inverse_cup_and_handle",
+  "12": "inverted_head_and_shoulders",
+  "13": "no_chart_pattern",
+  "14": "triple_bottom",
+  "15": "triple_top"
+}

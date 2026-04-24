@@ -1,0 +1,22 @@
+﻿
+==================================================
+ PROGRAMMATIC LOCALIZATION VERIFICATION
+==================================================
+  Loaded candlestick model: C:\Users\vardi\Desktop\ABS\saved_models\candlestick_model.keras
+  Loaded chart pattern model: C:\Users\vardi\Desktop\ABS\saved_models\chart_pattern_model.keras
+
+[TEST] Processing: hammer_0000.png
+  - Detected: inverted_hammer (45.02%)
+  - BBox: [0.6992672681808472, 0.5164210796356201, 0.9015932679176331, 0.858146071434021]
+  - Detected: bearish_pennant (44.55%)
+  - BBox: [0.0055841864086687565, 0.030670616775751114, 0.9754624962806702, 0.9694581031799316]
+  FAILURE: Expected 'hammer' not among detections
+  SUCCESS: Annotated image generated (size: 2040 chars)
+  Result saved to: C:\Users\vardi\Desktop\ABS\verify_hammer.png
+
+[TEST] Processing: double_top_0000.png
+  - Detected: double_top (96.0%)
+  - BBox: [0.006805052049458027, 0.008617082610726357, 0.9884998202323914, 0.9712930917739868]
+  SUCCESS: Found expected class 'double_top'
+  SUCCESS: Annotated image generated (size: 8768 chars)
+  Result saved to: C:\Users\vardi\Desktop\ABS\verify_double_top.png

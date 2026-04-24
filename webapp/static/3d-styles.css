@@ -1,0 +1,44 @@
+/* ─── 3D UI Enhancements ─────────────────────────────────── */
+
+/* 3D Background */
+.bg-animation {
+    background: radial-gradient(circle at 50% 50%, #111827 0%, #0a0e17 100%) !important;
+}
+
+#three-bg-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Glass Card 3D Depth */
+.glass-card {
+    transition: transform 0.1s ease-out, border-color 0.3s ease, box-shadow 0.3s ease !important;
+    transform-style: preserve-3d !important;
+    perspective: 1000px !important;
+}
+
+/* Hide old animated grid/candles from main CSS */
+.grid-lines,
+.floating-candle {
+    display: none !important;
+}
+
+/* 3D Loader Enhancement */
+.loader-ring {
+    border-top-color: var(--accent-cyan) !important;
+    border-right-color: var(--accent-purple) !important;
+    filter: drop-shadow(0 0 10px var(--accent-blue));
+}
+
+/* Depth for Buttons */
+.btn-upload,
+.btn-analyze {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.btn-upload:active,
+.btn-analyze:active {
+    transform: translateY(2px) scale(0.98);
+}

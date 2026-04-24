@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart Pattern AI — Pattern Recognition</title>
+    <meta name="description"
+        content="Upload stock chart images and get AI-powered candlestick and chart pattern predictions">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 3D Background Canvas Removed -->
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="material-icons-round logo-icon">candlestick_chart</span>
+            <h1>Chart Pattern <span class="accent">AI</span></h1>
+        </div>
+        <p class="subtitle">AI-Powered Candlestick & Chart Pattern Recognition</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <div class="upload-card glass-card" id="uploadCard">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon-wrapper">
+                        <span class="material-icons-round upload-icon">cloud_upload</span>
+                    </div>
+                    <h2>Upload Your Chart</h2>
+                    <p>Drag & drop a chart image here, or click to browse</p>
+                    <p class="upload-hint">Supports PNG, JPG, JPEG, GIF, BMP, WEBP • Max 16MB</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <button class="btn-upload" id="btnBrowse">
+                        <span class="material-icons-round">folder_open</span>
+                        Browse Files
+                    </button>
+                </div>
+
+                <!-- Persistent Risk Management Inputs -->
+                <div class="risk-inputs" id="riskInputs" style="margin: 2rem; display: flex; flex-direction: column; gap: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 0 20px rgba(255,255,255,0.02);">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #fff;"><span class="material-icons-round" style="font-size: 1.2rem; vertical-align: middle; color: #f59e0b;">account_balance_wallet</span> Trading Setup Inputs</h3>
+                    <p style="font-size: 0.85rem; color: #9ca3af; margin: 0 0 1rem 0;">These settings will be used to calculate your dynamic trade scenarios.</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
+                        <div class="input-group">
+                            <label for="inputCapital" style="display: block; font-size: 0.85rem; color: #9ca3af; margin-bottom: 0.5rem;">Total Capital (₹)</label>
+                            <input type="number" id="inputCapital" placeholder="e.g. 100000" value="100000" style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; transition: 0.3s;">
+                        </div>
+                        <div class="input-group">
+                            <label for="inputRisk" style="display: block; font-size: 0.85rem; color: #9ca3af; margin-bottom: 0.5rem;">Max Risk per Trade (%)</label>
+                            <input type="number" id="inputRisk" placeholder="e.g. 1" value="1" step="0.1" style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; transition: 0.3s;">
+                        </div>
+                        <div class="input-group">
+                            <label for="inputRR" style="display: block; font-size: 0.85rem; color: #9ca3af; margin-bottom: 0.5rem;">Target RR Ratio (1:X)</label>
+                            <input type="number" id="inputRR" placeholder="e.g. 2" value="2" step="0.1" style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; transition: 0.3s;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="preview-zone" id="previewZone" style="display:none;">
+                    <img id="previewImage" alt="Chart Preview">
+                    <div class="preview-actions">
+                        <button class="btn-analyze" id="btnAnalyze">
+                            <span class="material-icons-round">auto_awesome</span>
+                            Analyze Pattern
+                        </button>
+                        <button class="btn-clear" id="btnClear">
+                            <span class="material-icons-round">close</span>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading -->
+        <section class="loading-section" id="loadingSection" style="display:none;">
+            <div class="glass-card loading-card">
+                <div class="loader">
+                    <div class="loader-ring"></div>
+                    <span class="material-icons-round loader-icon">psychology</span>
+                </div>
+                <h3>Analyzing Pattern...</h3>
+                <p>The AI is examining your chart for candlestick and chart patterns</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display:none;">
+            <h2 class="results-title">
+                <span class="material-icons-round">insights</span>
+                Pattern Analysis Results
+            </h2>
+
+            <!-- Annotated Image Viewer -->
+            <div class="glass-card detection-card">
+                <div class="detection-header">
+                    <span class="material-icons-round">center_focus_strong</span>
+                    <h3>Detected Patterns</h3>
+                </div>
+                <div class="annotated-image-container">
+                    <img id="annotatedImage" alt="Annotated Analysis result">
+                </div>
+            </div>
+
+            <!-- Recommendation Card -->
+            <div class="glass-card recommendation-card" id="recommendationCard" style="display:none;">
+                <div class="rec-icon-wrapper" id="recIconWrapper">
+                    <span class="material-icons-round rec-icon" id="recIcon">trending_flat</span>
+                </div>
+                <div class="rec-content">
+                    <h3 id="recLabel">Recommendation</h3>
+                    <div class="rec-value" id="recValue">Neutral</div>
+                    <p id="recSentiment">Checking market sentiment...</p>
+                </div>
+            </div>
+
+            <!-- Trade Setup Calculator Result -->
+            <div class="glass-card trade-setup-card" id="tradeSetupCard" style="display:none; margin-bottom: 2rem;">
+                <div class="result-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1rem;">
+                    <span class="material-icons-round" style="color: #f59e0b;">calculate</span>
+                    <h3>Exact Trade Setup (1% Risk Rule)</h3>
+                </div>
+                
+                <div class="result-header" style="margin-bottom: 2rem; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+                    <span class="material-icons-round" style="color: #10b981;">ads_click</span>
+                    <h3>Trading Action Plan</h3>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem;">
+                    <!-- Action Details -->
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #10b981;" id="setupActionPanel">
+                        <h4 style="margin: 0 0 1rem 0; font-size: 1rem; color: #d1d5db; text-transform: uppercase; letter-spacing: 1px;">Trade Details</h4>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="color: #9ca3af;">Recommended Action:</span>
+                            <strong style="color: #fff; font-size: 1.1rem;" id="setupAction">BUY</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="color: #9ca3af;">Entry Price:</span>
+                            <strong style="color: #fff; font-size: 1.1rem;" id="setupEntry">₹0.00</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="color: #9ca3af;">Stop Loss:</span>
+                            <strong style="color: #ef4444; font-size: 1.1rem;" id="setupSL">₹0.00</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="color: #9ca3af;">Target Price (1:X):</span>
+                            <strong style="color: #10b981; font-size: 1.1rem;" id="setupTarget">₹0.00</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+                            <span style="color: #9ca3af;">Potential P&L:</span>
+                            <strong style="color: #fff; font-size: 1.1rem;" id="setupPNL"><span style="color: #10b981;">₹0</span> : <span style="color: #ef4444;">₹0</span></strong>
+                        </div>
+                    </div>
+
+                    <!-- Risk Math -->
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                        <h4 style="margin: 0 0 1rem 0; font-size: 1rem; color: #d1d5db; text-transform: uppercase; letter-spacing: 1px;">Risk Math</h4>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="color: #9ca3af;">Maximum Risk Allowed:</span>
+                            <strong style="color: #f59e0b; font-size: 1.1rem;" id="setupMaxRisk">₹0.00</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                            <span style="color: #9ca3af;">Risk per Share:</span>
+                            <strong style="color: #fff; font-size: 1.1rem;" id="setupRiskPerShare">₹0.00</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.2);">
+                            <span style="color: #fff; font-weight: 600;">Position Size:</span>
+                            <strong style="color: #00e5ff; font-size: 1.4rem; text-shadow: 0 0 10px rgba(0,229,255,0.5);" id="setupShares">0 Shares</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; color: #fca5a5; font-size: 0.9rem; text-align: left; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="material-icons-round" style="font-size: 1.2rem;">warning</span>
+                    <span id="setupWarning">If Stop Loss hits, your total loss will be strictly limited to the Max Risk.</span>
+                </div>
+            </div>
+            
+            <!-- Trading Scenarios -->
+            <div class="glass-card scenarios-card" id="scenariosCard" style="display:none; margin-bottom: 2rem; padding: 2rem;">
+                <!-- Pre-Trade Section -->
+                <div class="scenarios-section" id="preTradeSection">
+                    <div class="result-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                        <span class="material-icons-round" style="color: #f59e0b;">rocket_launch</span>
+                        <h3>Step 1: Before Buying (Entry Setups)</h3>
+                    </div>
+                    <div id="preTradeBody" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Post-Trade Section -->
+                <div class="scenarios-section" id="postTradeSection">
+                    <div class="result-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                        <span class="material-icons-round" style="color: #a855f7;">psychology</span>
+                        <h3>Step 2: After Buying (Trade Management)</h3>
+                    </div>
+                    <div id="postTradeBody" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <!-- Candlestick Patterns -->
+                <div class="glass-card result-card" id="candlestickResults">
+                    <div class="result-header">
+                        <span class="material-icons-round">candlestick_chart</span>
+                        <h3>Candlestick Patterns</h3>
+                    </div>
+                    <div class="result-body" id="candlestickBody">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Chart Patterns -->
+                <div class="glass-card result-card" id="chartResults">
+                    <div class="result-header">
+                        <span class="material-icons-round">show_chart</span>
+                        <h3>Chart Patterns</h3>
+                    </div>
+                    <div class="result-body" id="chartBody">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="glass-card summary-card" id="summaryCard" style="display:none;">
+                <div class="result-header">
+                    <span class="material-icons-round">summarize</span>
+                    <h3>Analysis Summary</h3>
+                </div>
+                <div class="summary-body" id="summaryBody"></div>
+            </div>
+
+            <button class="btn-upload btn-new-analysis" id="btnNewAnalysis">
+                <span class="material-icons-round">replay</span>
+                New Analysis
+            </button>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Chart Pattern AI • Built with TensorFlow & MobileNetV2 • CPU-Friendly</p>
+    </footer>
+
+    <script src="/static/app.js?v=1.5"></script>
+</body>
+
+</html>
